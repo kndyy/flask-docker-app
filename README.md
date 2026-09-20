@@ -1,34 +1,31 @@
-# lab-docker-flask
+# flask-docker-app - Lab 6.1 Compose + PostgreSQL
 
-Aplicacion Flask contenida con Docker para el laboratorio 5.1.
+Stack Flask + PostgreSQL con secrets, redes internas y volumen persistente. Imagen `flask-docker-app:2.0`, independiente del lab de Kubernetes (`flask-k8s-app:1.0`).
 
 ## Contenido
 
 app.py
 requirements.txt
 Dockerfile
-Dockerfile.alpine
 .dockerignore
-evidencias
+.gitignore
+.env.dev (ignorado, crear con DB_PASSWORD)
+pg_password.txt (ignorado, crear con printf sin salto)
+compose.yaml (Forma B, solo secret)
+init.sql
+evidencias-lab61/
 
 ## Uso local
 
-docker build -t flask-docker-app:1.0 .
-docker run -d -p 8080:5000 --name mi-flask-app flask-docker-app:1.0
-curl http://localhost:8080/api/health
-curl http://localhost:8080/api/info
-
-## Docker Hub
-
-leonardocandio/flask-docker-app:1.0
-leonardocandio/flask-docker-app:latest
-
-## Reto
-
-Base slim: python:3.11-slim, imagen 149MB
-Base alpine: python:3.11-alpine, imagen 77.1MB
-Alpine es mas liviana porque trae menos paquetes del sistema.
+printf 'devops123' > pg_password.txt
+printf 'DB_PASSWORD=devops123\n' > .env.dev
+docker compose up --build -d
+curl localhost:8080/api/health
+curl localhost:8080/items
+docker compose down
+docker compose up -d
+curl localhost:8080/items
 
 ## Evidencias
 
-Las capturas estan en la carpeta evidencias con terminal estilo macOS.
+Capturas reales en evidencias-lab61, generadas desde salidas de terminal.
